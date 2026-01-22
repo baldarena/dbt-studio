@@ -1,4 +1,4 @@
-Welcome to your new dbt project!
+Welcome to my jaffle_shop dbt project!
 
 ### Using the starter project
 
