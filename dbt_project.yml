@@ -19,13 +19,15 @@ clean-targets:
 
 
 models:
-  dbt_studio:
+  dbt_portfolio:
 
     p1_intro:
-      +schema: p1_intro
-
-      staging:
-        +materialized: view
-        
-      marts:
-        +materialized: table
+  
+      intro:
+        +schema: p1_intro_intro
+  
+        staging:
+          +materialized: view
+  
+        marts:
+          +materialized: table
