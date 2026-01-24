@@ -1,6 +1,13 @@
 
 version: 2
 
+#-------- SOURCES --------
+
+
+
+
+#-------- STAGING --------
+
 models:
     - name: my_first_dbt_model
       description: "A starter dbt model"
@@ -19,3 +26,6 @@ models:
             tests:
                 - unique
                 - not_null
+
+
+#-------- MARTS --------
