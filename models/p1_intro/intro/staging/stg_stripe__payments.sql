@@ -1,5 +1,5 @@
 SELECT
-          id AS id_payment,
+          id AS id_payment
         , orderid AS id_order
         , paymentmethod AS des_payment_method
         , status AS sts_payment
