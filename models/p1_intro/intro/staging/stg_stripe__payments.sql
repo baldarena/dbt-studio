@@ -7,4 +7,4 @@ SELECT
         , created AS dt_payment
         , _batchedat AS dt_hr_payment_load
 FROM 
-        `phb-raw-zone.stripe.payments`
+        `phb-raw-zone.stripe.payment`
