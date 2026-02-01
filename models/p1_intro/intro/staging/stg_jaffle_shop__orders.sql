@@ -1,7 +1,7 @@
-select
-        id as order_id,
-        user_id as customer_id,
-        order_date,
-        status
-
-    from `phb-raw-zone.jaffle_shop.orders`
+SELECT
+         id AS id_order
+       , user_id AS id_customer
+       , order_date AS dt_order
+       , status AS sts_order
+FROM 
+       `phb-raw-zone.jaffle_shop.orders`

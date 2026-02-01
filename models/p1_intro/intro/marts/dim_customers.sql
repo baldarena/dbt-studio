@@ -1,41 +1,103 @@
-with customers as (
-    select * from {{ ref('stg_jaffle_shop__customers') }}
-),
+{% set order_status = ['completed','placed','shipped','returned', 'return_pending'] %}
 
-orders as (
-    select * from {{ ref('stg_jaffle_shop__orders') }}
-),
+WITH 
 
-customer_orders as (
+core_orders AS (
+    SELECT *
+    FROM {{ ref('int_orders') }}
+)
+, order_status_pivoted AS (
+    SELECT
+              co.id_customer
 
-    select
-        customer_id,
+            --columns 'qt_orders' e 'vl_payment_received' per order status
+            , {% for status_order in order_status %}
+                  COUNTIF(co.sts_order = {{ status_order }}) AS qt_orders_{{ status_order }}
+                , SUM(
+                    CASE WHEN co.sts_order = {{ status_order }} THEN co.vl_payment_received ELSE 0 END
+                  ) AS vl_payment_received_{{ status_order }}_orders       
+              {% endfor %}
 
-        min(order_date) as first_order_date,
-        max(order_date) as most_recent_order_date,
-        count(order_id) as number_of_orders
+    FROM
+            core_orders co
+    GROUP BY
+            co.id_customer
+)
+, core_customer AS (
+    --REFAZER COM PIVOT POR TIPO DE PAGAMENTO - DOC DBT
+    SELECT
+              co.id_customer
+            , COUNT(co.id_order) AS qt_orders
+            , MIN(co.dt_order) AS dt_first_order
+            , MAX(co.dt_order) AS dt_last_order
 
-    from orders
+            , MAX(op.qt_orders_completed) AS qt_orders_completed
+            , MAX(op.qt_orders_placed) AS qt_orders_placed
+            , MAX(op.qt_orders_shipped) AS qt_orders_shipped
+            , MAX(op.qt_orders_return_pending) AS qt_orders_return_pending
+            , MAX(op.qt_orders_returned) AS qt_orders_returned
 
-    group by 1
+            , MAX(op.vl_payment_received_completed_orders) AS vl_payment_received_completed_orders
+            , MAX(op.vl_payment_received_placed_orders) AS vl_payment_received_placed_orders
+            , MAX(op.vl_payment_received_shipped_orders) AS vl_payment_received_shipped_orders
+            , MAX(op.vl_payment_received_return_pending_orders) AS vl_payment_received_return_pending_orders
+            , MAX(op.vl_payment_received_returned_orders) AS vl_payment_received_returned_orders
 
-),
+            , SUM(co.qt_succeeded_transactions) AS qt_succeeded_transactions
+            , SUM(co.qt_succeeded_transactions_bank_transfer) AS qt_succeeded_transactions_bank_transfer
+            , SUM(co.qt_succeeded_transactions_credit_card) AS qt_succeeded_transactions_credit_card
+            , SUM(co.qt_succeeded_transactions_coupon) AS qt_succeeded_transactions_coupon
+            , SUM(co.qt_succeeded_transactions_gift_card) As qt_succeeded_transactions_gift_card
 
+            , SUM(co.vl_payment_received) AS vl_payment_received
+            , SUM(co.vl_payment_received_bank_transfer) AS vl_payment_received_bank_transfer
+            , SUM(co.vl_payment_received_credit_card) AS vl_payment_received_credit_card
+            , SUM(co.vl_payment_received_coupon) AS vl_payment_received_coupon
+            , SUM(co.vl_payment_received_gift_card) AS vl_payment_received_gift_card
 
-final as (
-
-    select
-        customers.customer_id,
-        customers.first_name,
-        customers.last_name,
-        customer_orders.first_order_date,
-        customer_orders.most_recent_order_date,
-        coalesce(customer_orders.number_of_orders, 0) as number_of_orders
-
-    from customers
-
-    left join customer_orders using (customer_id)
-
+            , SUM(co.qt_failed_transactions) AS qt_failed_transactions
+            , SUM(co.qt_failed_transactions_bank_transfer) AS qt_failed_transactions_bank_transfer
+            , SUM(co.qt_failed_transactions_credit_card) AS qt_failed_transactions_credit_card
+            , SUM(co.qt_failed_transactions_coupon) AS qt_failed_transactions_coupon
+            , SUM(co.qt_failed_transactions_gift_card) AS qt_failed_transactions_gift_card
+    FROM
+            core_orders co
+    LEFT JOIN
+            order_status_pivoted op USING (id_customer)
+    GROUP BY 
+              p.id_customer
 )
 
-select * from final
+dim_customers AS (
+    SELECT
+              cc.id_customer
+            , cc.des_first_name
+            , cc.des_last_name
+
+            , COALESCE(op.qt_orders) AS qt_orders --ajustar na int_orders para trazer orders por status
+            , cc.dt_first_order
+            , cc.dt_last_order
+            
+            , cc.qt_succeeded_transactions
+            , cc.qt_succeeded_transactions_bank_transfer
+            , cc.qt_succeeded_transactions_credit_card
+            , cc.qt_succeeded_transactions_coupon
+            , cc.qt_succeeded_transactions_gift_card
+
+            , cc.vl_payment_received AS vl_lifetime_received
+            , cc.vl_payment_received_bank_transfer
+            , cc.vl_payment_received_credit_card
+            , cc.vl_payment_received_coupon
+            , cc.vl_payment_received_gift_card
+
+            , cc.qt_failed_transactions
+            , cc.qt_failed_transactions_bank_transfer
+            , cc.qt_failed_transactions_credit_card
+            , cc.qt_failed_transactions_coupon
+            , cc.qt_failed_transactions_gift_card
+    FROM 
+            core_customer cc
+)
+
+SELECT * 
+FROM dim_customers
