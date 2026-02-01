@@ -11,10 +11,10 @@ core_orders AS (
               co.id_customer
 
             --columns 'qt_orders' e 'vl_payment_received' per order status
-            , {% for status_order in order_status %}
-                  COUNTIF(co.sts_order = {{ status_order }}) AS qt_orders_{{ status_order }}
+             {% for status_order in order_status %}
+                , COUNTIF(co.sts_order = '{{ status_order }}') AS qt_orders_{{ status_order }}
                 , SUM(
-                    CASE WHEN co.sts_order = {{ status_order }} THEN co.vl_payment_received ELSE 0 END
+                    CASE WHEN co.sts_order = '{{ status_order }}' THEN co.vl_payment_received ELSE 0 END
                   ) AS vl_payment_received_{{ status_order }}_orders       
               {% endfor %}
 
@@ -23,8 +23,8 @@ core_orders AS (
     GROUP BY
             co.id_customer
 )
-, core_customer AS (
-    --REFAZER COM PIVOT POR TIPO DE PAGAMENTO - DOC DBT
+
+, dim_customers AS (
     SELECT
               co.id_customer
             , COUNT(co.id_order) AS qt_orders
@@ -65,38 +65,7 @@ core_orders AS (
     LEFT JOIN
             order_status_pivoted op USING (id_customer)
     GROUP BY 
-              p.id_customer
-)
-
-dim_customers AS (
-    SELECT
-              cc.id_customer
-            , cc.des_first_name
-            , cc.des_last_name
-
-            , COALESCE(op.qt_orders) AS qt_orders --ajustar na int_orders para trazer orders por status
-            , cc.dt_first_order
-            , cc.dt_last_order
-            
-            , cc.qt_succeeded_transactions
-            , cc.qt_succeeded_transactions_bank_transfer
-            , cc.qt_succeeded_transactions_credit_card
-            , cc.qt_succeeded_transactions_coupon
-            , cc.qt_succeeded_transactions_gift_card
-
-            , cc.vl_payment_received AS vl_lifetime_received
-            , cc.vl_payment_received_bank_transfer
-            , cc.vl_payment_received_credit_card
-            , cc.vl_payment_received_coupon
-            , cc.vl_payment_received_gift_card
-
-            , cc.qt_failed_transactions
-            , cc.qt_failed_transactions_bank_transfer
-            , cc.qt_failed_transactions_credit_card
-            , cc.qt_failed_transactions_coupon
-            , cc.qt_failed_transactions_gift_card
-    FROM 
-            core_customer cc
+              co.id_customer
 )
 
 SELECT * 

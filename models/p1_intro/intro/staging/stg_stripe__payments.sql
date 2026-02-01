@@ -5,6 +5,6 @@ SELECT
         , status AS sts_payment
         , amount AS vl_payment_received
         , created AS dt_payment
-        , _batchedat AS dt_hr_payment_load
+        , _batched_at AS dt_hr_payment_load
 FROM 
         `phb-raw-zone.stripe.payment`

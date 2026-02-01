@@ -11,11 +11,11 @@ core_payments AS (
               cp.id_order
 
             --columns 'qt_transactions', 'qt_failed_transactions' and 'vl_payment' per payment method
-            , {% for payment_method in payment_methods %}
-                  COUNTIF(cp.payment_method = {{ payment_method }} AND cp.sts_payment = 'success') AS qt_succeeded_transactions_{{ payment_method }}
-                , COUNTIF(cp.payment_method = {{ payment_method }} AND cp.sts_payment = 'fail') AS qt_failed_transactions_{{ payment_method }}  
+             {% for payment_method in payment_methods %}
+                , COUNTIF(cp.des_payment_method = '{{ payment_method }}' AND cp.sts_payment = 'success') AS qt_succeeded_transactions_{{ payment_method }}
+                , COUNTIF(cp.des_payment_method = '{{ payment_method }}' AND cp.sts_payment = 'fail') AS qt_failed_transactions_{{ payment_method }}  
                 , SUM(
-                    CASE WHEN cp.payment_method = {{ payment_method }} AND cp.sts_payment = 'success' THEN cp.vl_payment_received ELSE 0 END
+                    CASE WHEN cp.des_payment_method = '{{ payment_method }}' AND cp.sts_payment = 'success' THEN cp.vl_payment_received ELSE 0 END
                   ) AS vl_payment_received_{{ payment_method }}       
               {% endfor %}
     FROM
@@ -44,7 +44,7 @@ core_payments AS (
             , MAX(op.vl_payment_received_coupon) AS vl_payment_received_coupon
             , MAX(op.vl_payment_received_gift_card) AS vl_payment_received_gift_card
 
-            , COUNT(DISTINCT IF(cp.sts_payment = 'success', cp.payment_method, NULL)) AS qt_payment_methods
+            , COUNT(DISTINCT IF(cp.sts_payment = 'success', cp.des_payment_method, NULL)) AS qt_payment_methods
             , MAX(CASE WHEN cp.sts_payment = 'success' THEN dt_payment END) AS dt_last_payment
 
             , COUNTIF(cp.sts_payment = 'fail') AS qt_failed_transactions

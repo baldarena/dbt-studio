@@ -25,7 +25,7 @@ orders AS(
             , p.des_payment_method
             , p.sts_payment
             , p.dt_payment
-            , p.vl_payment
+            , p.vl_payment_received      
     FROM
             payments p
     LEFT JOIN
