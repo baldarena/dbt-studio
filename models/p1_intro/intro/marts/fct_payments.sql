@@ -21,4 +21,4 @@ payments_orders AS (
 )
 
 SELECT *
-FROM fact_payments
+FROM fct_payments
