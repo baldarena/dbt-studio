@@ -21,13 +21,12 @@ clean-targets:
 models:
   dbt_portfolio:
 
-    p1_intro:
+    p1_jaffle_shop:
   
-      intro:
-        +schema: p1_intro_intro
+      +schema: jaffle_shop
   
-        staging:
-          +materialized: view
+      staging:
+        +materialized: view
   
-        marts:
-          +materialized: table
+      marts:
+        +materialized: table
