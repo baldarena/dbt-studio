@@ -25,8 +25,11 @@ models:
   
       +schema: jaffle_shop
   
-      staging:
+      1_staging:
+        +materialized: view
+
+      2_intermediate:
         +materialized: view
   
-      marts:
+      3_marts:
         +materialized: table

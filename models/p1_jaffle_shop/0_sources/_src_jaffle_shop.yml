@@ -1,0 +1,7 @@
+sources:
+  - name: jaffle_shop
+    database: phb-raw-zone
+    schema: jaffle_shop  
+    tables:
+      - name: orders
+      - name: customers

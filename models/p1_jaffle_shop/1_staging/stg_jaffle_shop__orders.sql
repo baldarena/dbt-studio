@@ -4,4 +4,4 @@ SELECT
        , order_date AS dt_order
        , status AS sts_order
 FROM 
-       `phb-raw-zone.jaffle_shop.orders`
+       {{ source('jaffle_shop', 'orders') }}
