@@ -7,4 +7,4 @@ SELECT
         , created AS dt_payment
         , _batched_at AS dt_hr_payment_load
 FROM 
-        {{ source('stripe', 'payments') }}
+        {{ source('stripe', 'payment') }}
