@@ -1,0 +1,51 @@
+version: 2
+
+models:
+
+  - name: stg_jaffle_shop__customers
+    columns:
+      - name: id_customer
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_jaffle_shop__orders
+    columns:
+      - name: id_order
+        tests:
+          - unique
+          - not_null
+      - name: sts_order
+        tests:
+        - accepted_values:
+            arguments: 
+              values: ['completed', 'shipped', 'placed', 'return_pending', 'returned']
+      - name: id_customer
+        tests:
+        - relationships:
+            arguments: 
+              to: ref('stg_jaffle_shop__customers')
+              field: id_customer
+  
+  - name: stg_stripe__payments
+    columns:
+      - name: id_payment
+        tests:
+          - unique
+          - not_null
+      - name: id_order
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__orders')
+                field: id_order
+      - name: sts_payment
+        tests:
+        - accepted_values:
+            arguments: 
+              values: ['success', 'fail']
+      - name: des_payment_method
+        tests:
+        - accepted_values:
+            arguments: 
+              values: ['credit_card', 'gift_card', 'coupon', 'bank_transfer']
