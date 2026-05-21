@@ -1,0 +1,37 @@
+version: 1
+
+models:
+
+  - name: int_customers_metrics
+    description: 'intermediate step to pre-calculate and/or aggregate some metrics per customer - grain: one row per customer - calculations and aggregations made'
+    columns:
+      - name: id_customer
+        description: 'primary key for the customers table'
+      - name: des_first_name
+        description: "{{doc('first_name')}}"
+      - name: des_last_name
+        description: "{{doc('last_name')}}"
+      - name: qt_orders
+        description: "Total amount of orders per customer"
+      - name: qt_orders_returned
+        description: "Amount of orders with 'returned' status per customer"
+      - name: dt_first_order
+        description: "Date of each customer first order (regardless of its status) - MIN(dt_order) GROUP BY id_customer"
+      - name: dt_last_order
+        description: "Date of each customer last order (regardless of its status) - MAX(dt_order) GROUP BY id_customer"
+      - name: vl_lifetime
+        description: "Total amount of payment values ($) with 'success' status per customer - Help to identify great spenders, loyal customers, etc."
+      - name: vl_avg_ticket
+        description: "Average order value ($) per customer - Help to distinguish customer profiles and purchase/product tendencies"
+      - name: des_payment_method_preferred
+        description: "Most used payment method per customer - Help to identify preferencies to prioritize specific payment journeys"
+      - name: pct_share_payment_method_preferred
+        description: "most used payment method representation (% of total) per customer - Help to identify increases or decreases"
+      - name: qt_succeeded_transactions
+        description: "{{doc('qt_succeeded_transactions')}}"
+      - name: vl_succeeded_transactions
+        description: "{{doc('vl_succeeded_transactions')}}"
+      - name: qt_failed_transactions
+        description: "{{doc('qt_failed_transactions')}}"
+      - name: vl_wavg_failed_transactions
+        description: "{{doc('vl_wavg_failed_transactions')}}"

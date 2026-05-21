@@ -1,15 +1,30 @@
 sources:
   - name: stripe
+    description: "raw data from stripe starsoft database"
     database: phb-raw-zone
     schema: stripe
     tables:
     
       - name: payment
+        description: "raw data from payment source"
         columns:
           - name: id
+            description: "primary key for payment source, one unique id per payment attempt/installment"
             tests:
               - unique
-              - not_null          
+              - not_null
+          - name: orderid
+            description: "foreign key to link payment attempts/installments to its respective orders, multiple attempts/installments allowed per order"
+          - name: paymentmethod
+            description: "each attempt/installment payment method. possible values: 'credit_card', 'gift_card', 'coupon', 'bank_transfer' "
+          - name: status
+            description: "each attempt/installment situation. possible values: 'success', 'fail' "
+          - name: amount
+            description: "each attempt/installment amount (x100 due to origin system patterns)"
+          - name: created
+            description: "date in which each attempt/installment was registered on starsoft"
+          - name: _batched_at
+            description: "datetime in which data was loaded/updated at bigquery"          
         config:
           loaded_at_field: _batched_at
           freshness:
