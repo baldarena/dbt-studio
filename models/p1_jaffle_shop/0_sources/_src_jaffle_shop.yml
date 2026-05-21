@@ -1,15 +1,24 @@
 sources:
   - name: jaffle_shop
+    description: "raw data from jaffle shop postgres database"
     database: phb-raw-zone
     schema: jaffle_shop  
     tables:
 
       - name: orders
+        description: "raw data from orders"
         columns:
           - name: id
+            description: "primary key for orders source, one unique id per order"
             tests:
               - unique
               - not_null
+          - name: user_id
+            description: "foreign key to link orders to its respective customers"
+          - name: order_date
+            description: "datetime in which each order was registered"
+          - name: status
+            description: "each order current situation. possible values: 'completed', 'shipped', 'placed', 'return_pending', 'returned' (stg doc for +details)"
         config:
           loaded_at_field: _batched_at
           freshness:
@@ -17,8 +26,14 @@ sources:
             error_after: {count: 24, period: hour}
 
       - name: customers
+        description: "raw data from customers"
         columns:
           - name: id
+            description: "primary key for customers source, one unique id per customer"
             tests:
               - unique
               - not_null
+          - name: first_name
+            description: "{{doc('first_name')}}"
+          - name: last_name
+            description: "{{doc('last_name')}}"

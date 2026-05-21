@@ -3,24 +3,34 @@ version: 2
 models:
 
   - name: stg_jaffle_shop__customers
+    description: 'customers database containing personal information - grain: one row per customer - fields renamed and types set up'
     columns:
       - name: id_customer
+        description: 'primary key for the customers table'
         tests:
           - unique
           - not_null
+      - name: des_first_name
+        description:  "{{doc('first_name')}}"
+      - name: des_last_name
+        description: "{{doc('last_name')}}"
 
   - name: stg_jaffle_shop__orders
+    description: 'orders database containing order dates and status - grain: one row per order - fields renamed and types set up'
     columns:
       - name: id_order
+        description: 'primary key for the orders table'
         tests:
           - unique
           - not_null
       - name: sts_order
+        description: "{{ doc('order_status') }}"
         tests:
         - accepted_values:
             arguments: 
               values: ['completed', 'shipped', 'placed', 'return_pending', 'returned']
       - name: id_customer
+        description: 'foreign key to link orders with its respective customers'
         tests:
         - relationships:
             arguments: 
@@ -28,8 +38,10 @@ models:
               field: id_customer
   
   - name: stg_stripe__payments
+    description: 'payments database containing payment values and status - grain: one row per transaction in each order, be it successful or not (an ATTEMPT if it fails, an INSTALLMENT if it succeeds) - fields renamed, types set up and numeric values adjusted'
     columns:
       - name: id_payment
+        description: 'primary key for payments table'
         tests:
           - unique
           - not_null
@@ -40,11 +52,13 @@ models:
                 to: ref('stg_jaffle_shop__orders')
                 field: id_order
       - name: sts_payment
+        description: 'payment/transaction situation; possible values: success, fail (an ATTEMPT if it fails, an INSTALLMENT if it succeeds)'
         tests:
         - accepted_values:
             arguments: 
               values: ['success', 'fail']
       - name: des_payment_method
+        description: "{{doc('payment_methods')}}"
         tests:
         - accepted_values:
             arguments: 
