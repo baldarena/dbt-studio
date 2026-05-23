@@ -12,7 +12,7 @@ payments_metrics AS (
             , pm.sts_order
             , COUNT(pm.id_order) AS qt_orders
             , COUNT(DISTINCT pm.flg_succeeded_transaction) AS qt_payment_methods
-            , MAX(pm.dt_succeeded_payment) AS dt_last_succeeded_payment
+            , MAX(pm.dt_succeeded_transaction) AS dt_last_succeeded_transaction
             , SUM(pm.flg_succeeded_transaction) AS qt_succeeded_transactions
             , SUM(pm.vl_succeeded_transaction) AS vl_succeeded_transactions
             , SUM(pm.flg_failed_transaction) AS qt_failed_transactions
@@ -37,7 +37,7 @@ payments_metrics AS (
             , om.sts_order
             , om.qt_orders
             , om.qt_payment_methods
-            , om.dt_last_succeeded_payment
+            , om.dt_last_succeeded_transaction
             , om.qt_succeeded_transactions
             , om.vl_succeeded_transactions
             , om.qt_failed_transactions

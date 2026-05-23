@@ -15,7 +15,6 @@ WITH
 , payments_metrics AS (
     SELECT
               p.id_payment
-            , CASE WHEN p.sts_payment = 'success' THEN p.dt_payment END AS dt_succeeded_payment
             , CASE WHEN p.sts_payment = 'success' THEN p.dt_payment END AS dt_succeeded_transaction
             , CASE WHEN p.sts_payment = 'success' THEN 1 END AS flg_succeeded_transaction
             , CASE WHEN p.sts_payment = 'fail' THEN 1 END AS flg_failed_transaction

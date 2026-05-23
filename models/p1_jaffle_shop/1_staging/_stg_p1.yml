@@ -6,7 +6,7 @@ models:
     description: 'customers database containing personal information - grain: one row per customer - fields renamed and types set up'
     columns:
       - name: id_customer
-        description: 'primary key for the customers table'
+        description: "{{doc('pk_id_customer')}}"
         tests:
           - unique
           - not_null
@@ -19,47 +19,56 @@ models:
     description: 'orders database containing order dates and status - grain: one row per order - fields renamed and types set up'
     columns:
       - name: id_order
-        description: 'primary key for the orders table'
+        description: "{{doc('pk_id_order')}}"
         tests:
           - unique
           - not_null
+      - name: id_customer
+        description: "{{doc('fk_id_customer')}}"
+        tests:
+        - relationships:
+            arguments: 
+              to: ref('stg_jaffle_shop__customers')
+              field: id_customer
+      - name: dt_order
+        description: "{{doc('dt_order')}}"
       - name: sts_order
         description: "{{ doc('order_status') }}"
         tests:
         - accepted_values:
             arguments: 
               values: ['completed', 'shipped', 'placed', 'return_pending', 'returned']
-      - name: id_customer
-        description: 'foreign key to link orders with its respective customers'
-        tests:
-        - relationships:
-            arguments: 
-              to: ref('stg_jaffle_shop__customers')
-              field: id_customer
-  
+      
   - name: stg_stripe__payments
     description: 'payments database containing payment values and status - grain: one row per transaction in each order, be it successful or not (an ATTEMPT if it fails, an INSTALLMENT if it succeeds) - fields renamed, types set up and numeric values adjusted'
     columns:
       - name: id_payment
-        description: 'primary key for payments table'
+        description: "{{doc('pk_id_payment')}}"
         tests:
           - unique
           - not_null
       - name: id_order
+        description: "{{doc('fk_id_order')}}"
         tests:
           - relationships:
               arguments:
                 to: ref('stg_jaffle_shop__orders')
                 field: id_order
-      - name: sts_payment
-        description: 'payment/transaction situation; possible values: success, fail (an ATTEMPT if it fails, an INSTALLMENT if it succeeds)'
-        tests:
-        - accepted_values:
-            arguments: 
-              values: ['success', 'fail']
       - name: des_payment_method
         description: "{{doc('payment_methods')}}"
         tests:
         - accepted_values:
             arguments: 
               values: ['credit_card', 'gift_card', 'coupon', 'bank_transfer']
+      - name: sts_payment
+        description: "{{doc('sts_payment')}}"
+        tests:
+        - accepted_values:
+            arguments: 
+              values: ['success', 'fail']
+      - name: vl_payment
+        description: "{{doc('vl_payment')}}"
+      - name: dt_payment
+        description: "{{doc('dt_payment')}}"
+      - name: dt_hr_payment_load
+        description: "Datetime in which payment source was last updated on BigQuery"
