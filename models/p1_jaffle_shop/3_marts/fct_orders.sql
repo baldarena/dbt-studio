@@ -13,7 +13,7 @@ orders_metrics AS (
             , om.sts_order
             , om.qt_orders
             , om.qt_payment_methods
-            , om.dt_last_succeeded_payment
+            , om.dt_last_succeeded_transaction
             , om.qt_succeeded_transactions
             , om.vl_succeeded_transactions
             , om.qt_failed_transactions

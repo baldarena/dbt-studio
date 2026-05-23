@@ -1,0 +1,58 @@
+version: 1
+
+models:
+
+  - name: int_payment_metrics
+    description: 'intermediate step to join all dimensions/sources (customers, orders and payments) pre-calculate and/or aggregate some metrics per order - grain: one row per order - calculations and aggregations made'
+    columns:
+      - name: id_payment
+        description: "{{doc('pk_id_payment')}}"
+      - name: id_order
+        description: "{{doc('fk_id_order')}}"
+      - name: dt_order
+        description: "{{doc('dt_order')}}"
+      - name: sts_order
+        description: "{{doc('order_status')}}"
+      - name: id_customer
+        description: "{{doc('fk_id_customer')}}"
+      - name: des_first_name
+        description: "{{doc('first_name')}}"
+      - name: des_last_name
+        description: "{{doc('last_name')}}"
+      - name: des_payment_method
+        description: "{{doc('payment_methods')}}"
+      - name: sts_payment
+        description: "{{doc('sts_payment')}}"
+      - name: dt_payment
+        description: "{{doc('dt_payment')}}"
+      - name: vl_payment
+        description: "{{doc('vl_payment')}}"
+      - name: dt_succeeded_transaction
+        description: "Datetime of transaction only shown for succeeded transactions (success status). Help with further aggregations."
+      - name: flg_succeeded_transaction
+        description: "Boolean that indicates true only for succeeded transactions (success status). Help with further aggregations."
+      - name: flg_failed_transaction
+        description: "Boolean that indicate true only for failed transactions (fail status). Help with further aggregations."
+      - name: vl_succeeded_transaction
+        description: "Value of transaction only shown for succeeded transactions (success status). Help with further aggregations."
+      - name: vl_failed_transaction
+        description: "Value of transaction only shown for failed transactions (fail status). Help with further aggregations."
+  
+  - name: int_payment_methods_metrics
+    description: "intermediate step to pre-calculate and/or aggregate some metrics per payment method per customer - grain: one row per payment method in each customer's order history - calculations and aggregations made"
+    columns:
+      - name: id_customer
+        description: "{{doc('fk_id_customer')}} | Primary key when combined with des_payment_method."
+      - name: des_payment_method
+        description: "{{doc('payment_methods')}}"
+      - name: qt_succeeded_transactions
+        description: "{{doc('qt_succeeded_transactions')}}"
+      - name: vl_succeeded_transactions
+        description: "{{doc('vl_succeeded_transactions')}}"
+      - name: qt_failed_transactions
+        description: "{{doc('qt_failed_transactions')}}"
+      - name: vl_wavg_failed_transactions
+        description: "{{doc('vl_wavg_failed_transactions')}}"
+
+  
+      
