@@ -1,0 +1,40 @@
+version: 1
+
+models:
+
+  - name: fct_payments
+    description: 'final payments dimension with payment ocorrencies ready to analyse - grain: one row per payment/transaction - calculations and aggregations made'
+    columns:
+      - name: id_payment
+        description: "{{doc('pk_id_payment')}}"
+      - name: id_order
+        description: "{{doc('fk_id_order')}}"
+      - name: id_customer
+        description: "{{doc('fk_id_customer')}}"
+      - name: des_payment_method
+        description: "{{doc('payment_methods')}}"
+      - name: sts_payment
+        description: "{{doc('sts_payment')}}"
+      - name: dt_payment
+        description: "{{doc('dt_payment')}}"
+      - name: vl_payment
+        description: "{{doc('vl_payment')}}"
+  
+  - name: fct_payment_methods_metrics
+    description: "final payments methods fact with payments per payment method ocorrencies ready to analyse - grain: one row per payment method in each customer's order history - calculations and aggregations made"
+    columns:
+      - name: id_customer
+        description: "{{doc('fk_id_customer')}} | Primary key when combined with des_payment_method."
+      - name: des_payment_method
+        description: "{{doc('payment_methods')}}"
+      - name: qt_succeeded_transactions
+        description: "{{doc('qt_succeeded_transactions')}}"
+      - name: vl_succeeded_transactions
+        description: "{{doc('vl_succeeded_transactions')}}"
+      - name: qt_failed_transactions
+        description: "{{doc('qt_failed_transactions')}}"
+      - name: vl_wavg_failed_transactions
+        description: "{{doc('vl_wavg_failed_transactions')}}"
+
+  
+      
