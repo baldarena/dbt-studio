@@ -1,0 +1,48 @@
+version: 1
+
+models:
+
+  - name: fct_order_status_metrics
+    description: "final orders status fact with orders ocorrencies per status ready to analyse - grain: one row per order status in each customer's order history - calculations and aggregations made"
+    columns:
+      - name: id_customer
+        description: "{{doc('pk_id_customer')}} | Primary key when combined with sts_order"
+      - name: sts_order
+        description: "{{doc('order_status')}}"
+      - name: qt_orders
+        description: "{{doc('qt_orders')}}"
+      - name: qt_succeeded_transactions
+        description: "{{doc('qt_succeeded_transactions')}}"
+      - name: vl_succeeded_transactions
+        description: "{{doc('vl_succeeded_transactions')}}"
+      - name: qt_failed_transactions
+        description: "{{doc('qt_failed_transactions')}}"
+      - name: vl_wavg_failed_transactions
+        description: "{{doc('vl_wavg_failed_transactions')}}"
+
+  - name: fact_orders
+    description: 'final orders fact with order ocorrencies ready to analyse - grain: one row per order - calculations and aggregations made'
+    columns:
+      - name: id_order
+        description: "{{doc('pk_id_order')}}"
+      - name: id_customer
+        description: "foreign key for the customers table"
+      - name: dt_order
+        description: "{{doc('dt_order')}}"
+      - name: sts_order
+        description: "{{doc('order_status')}}"
+      - name: qt_orders
+        description: "{{doc('qt_orders')}}"
+      - name: qt_payment_methods
+        description: "{{doc('qt_payment_methods')}}"
+      - name: dt_last_succeeded_payment
+        description: "{{doc('dt_last_succeeded_payment')}}"
+      - name: qt_succeeded_transactions
+        description: "{{doc('qt_succeeded_transactions')}}"
+      - name: vl_succeeded_transactions
+        description: "{{doc('vl_succeeded_transactions')}}"
+      - name: qt_failed_transactions
+        description: "{{doc('qt_failed_transactions')}}"
+      - name: vl_wavg_failed_transactions
+        description: "{{doc('vl_wavg_failed_transactions')}}"
+      
