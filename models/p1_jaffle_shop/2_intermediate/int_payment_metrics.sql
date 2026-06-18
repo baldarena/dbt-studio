@@ -36,7 +36,6 @@ WITH
             , p.des_payment_method
             , p.sts_payment
             , p.dt_payment
-            , pm.dt_succeeded_payment
             , p.vl_payment
             , pm.dt_succeeded_transaction  
             , pm.flg_succeeded_transaction
