@@ -6,6 +6,14 @@ The objective of this project is to transform raw transactional data into analyt
 
 ---
 
+## Data Lineage
+
+The following diagram illustrates the end-to-end lineage of the project, from raw sources to analytics-ready marts.
+
+![Project Lineage](p1_assets/1 - dag_project_arquitecture.png)
+
+---
+
 ## Project Goals
 
 This project aims to answer business questions such as:
@@ -232,6 +240,10 @@ Main metrics:
 * Failed Transactions Count
 * Weighted Average Failed Transaction Value
 
+#### Example
+
+![dim_customers](p1_assets/2a - dim_customers_bigquery.png)
+
 ---
 
 ### fct_orders
@@ -244,6 +256,10 @@ Grain:
 
 Contains aggregated payment performance indicators linked to each customer order.
 
+#### Example
+
+![fct_orders](p1_assets/2b - fct_orders_bigquery.png)
+
 ---
 
 ### fct_payments
@@ -255,6 +271,10 @@ Grain:
 * One row per payment transaction
 
 Represents the lowest level of detail available in the project.
+
+#### Example
+
+![fct_payments](p1_assets/2c - fct_payments_bigquery.png)
 
 ---
 
@@ -272,6 +292,10 @@ Supports analyses such as:
 * Payment method adoption
 * Success and failure rates by payment type
 
+#### Example
+
+![fct_payment_methods_metrics](p1_assets/2d - fct_payment_methods_metrics_bigquery.png)
+
 ---
 
 ### fct_order_status_metrics
@@ -288,6 +312,10 @@ Includes:
 * Last Purchase Date
 * Successful Payment Metrics
 * Failed Payment Metrics
+
+#### Example
+
+![fct_order_status_metrics](p1_assets/2e - fct_order_status_metrics_bigquery.png)
 
 ---
 
@@ -368,6 +396,15 @@ Project documentation is available through dbt Docs and includes:
 * Column-level metadata
 * Data lineage
 * Test coverage
+
+#### documentation Example
+
+![dim_customers](p1_assets/3a - dim_customers_doc.png)
+![fct_orders](p1_assets/3b - fct_orders_doc.png)
+![fct_payments](p1_assets/3c - fct_payments_doc.png)
+![fct_payment_methods_metrics](p1_assets/3d - fct_payment_methods_metrics_doc.png)
+![fct_order_status_metrics](p1_assets/3e - fct_order_status_metrics_doc.png)
+
 
 Generate documentation with:
 
