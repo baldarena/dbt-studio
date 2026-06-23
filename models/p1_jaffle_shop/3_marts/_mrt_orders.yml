@@ -20,7 +20,7 @@ models:
       - name: vl_wavg_failed_transactions
         description: "{{doc('vl_wavg_failed_transactions')}}"
 
-  - name: fact_orders
+  - name: fct_orders
     description: 'final orders fact with order ocorrencies ready to analyse - grain: one row per order - calculations and aggregations made'
     columns:
       - name: id_order
