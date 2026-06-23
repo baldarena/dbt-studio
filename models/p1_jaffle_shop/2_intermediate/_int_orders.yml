@@ -20,7 +20,7 @@ models:
       - name: vl_wavg_failed_transactions
         description: "{{doc('vl_wavg_failed_transactions')}}"
 
-  - name: int_order_metrics
+  - name: int_orders_metrics
     description: 'intermediate step to pre-calculate and/or aggregate some metrics per order - grain: one row per order - calculations and aggregations made'
     columns:
       - name: id_order
