@@ -10,7 +10,7 @@ The objective of this project is to transform raw transactional data into analyt
 
 The following diagram illustrates the end-to-end lineage of the project, from raw sources to analytics-ready marts.
 
-![Project Lineage](p1_assets/1 - dag_project_arquitecture.png)
+![Project Lineage](_p1_assets/1_dag_project_arquitecture.png)
 
 ---
 
@@ -242,7 +242,7 @@ Main metrics:
 
 #### Example
 
-![dim_customers](p1_assets/2a - dim_customers_bigquery.png)
+![dim_customers](_p1_assets/2a_dim_customers_bigquery.png)
 
 ---
 
@@ -258,7 +258,7 @@ Contains aggregated payment performance indicators linked to each customer order
 
 #### Example
 
-![fct_orders](p1_assets/2b - fct_orders_bigquery.png)
+![fct_orders](_p1_assets/2b_fct_orders_bigquery.png)
 
 ---
 
@@ -274,7 +274,7 @@ Represents the lowest level of detail available in the project.
 
 #### Example
 
-![fct_payments](p1_assets/2c - fct_payments_bigquery.png)
+![fct_payments](_p1_assets/2c_fct_payments_bigquery.png)
 
 ---
 
@@ -294,7 +294,7 @@ Supports analyses such as:
 
 #### Example
 
-![fct_payment_methods_metrics](p1_assets/2d - fct_payment_methods_metrics_bigquery.png)
+![fct_payment_methods_metrics](_p1_assets/2d_fct_payment_methods_metrics_bigquery.png)
 
 ---
 
@@ -315,7 +315,7 @@ Includes:
 
 #### Example
 
-![fct_order_status_metrics](p1_assets/2e - fct_order_status_metrics_bigquery.png)
+![fct_order_status_metrics](_p1_assets/2e_fct_order_status_metrics_bigquery.png)
 
 ---
 
@@ -399,11 +399,11 @@ Project documentation is available through dbt Docs and includes:
 
 #### documentation Example
 
-![dim_customers](p1_assets/3a - dim_customers_doc.png)
-![fct_orders](p1_assets/3b - fct_orders_doc.png)
-![fct_payments](p1_assets/3c - fct_payments_doc.png)
-![fct_payment_methods_metrics](p1_assets/3d - fct_payment_methods_metrics_doc.png)
-![fct_order_status_metrics](p1_assets/3e - fct_order_status_metrics_doc.png)
+![dim_customers](_p1_assets/3a_dim_customers_doc.png)
+![fct_orders](_p1_assets/3b_fct_orders_doc.png)
+![fct_payments](_p1_assets/3c_fct_payments_doc.png)
+![fct_payment_methods_metrics](_p1_assets/3d_fct_payment_methods_metrics_doc.png)
+![fct_order_status_metrics](_p1_assets/3e_fct_order_status_metrics_doc.png)
 
 
 Generate documentation with:
